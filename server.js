@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 const todosRouter = require('./routers/todos-routers');
 
 /*
@@ -18,6 +18,7 @@ todosRouter.configuration(router);
 /*
 * Middleware
 */
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', router);
