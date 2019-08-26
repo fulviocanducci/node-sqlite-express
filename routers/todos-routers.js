@@ -35,7 +35,7 @@ module.exports = {
                 done
             }, {
                 where: { 
-                    id: id 
+                    id
                 }
             })
             .then((result) => { res.json(result) })
