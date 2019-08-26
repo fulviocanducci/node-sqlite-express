@@ -1,40 +1,56 @@
-const todosRepository = require('../repositories/todos-respository');
+const todosModel = require('../models/todos-model');
 
 module.exports = {
     configuration: (router) => {
-        router.get('/todos', (req, res) => {            
-            todosRepository.all()
-                .then(result => { res.json(result) });
+        router.get('/todos', (req, res) => {                        
+            todosModel.findAll()
+                .then((result) => { res.json(result) })
+                .catch((error) => { res.json(error) });
         });
         
         router.get('/todo/:id?', (req, res) => {
             const id = parseInt(req.params.id);
-            todosRepository.find([id])
-                .then((result) => { res.json(result) });
+            todosModel.findByPk(id)
+                .then((result) => { res.json(result) })
+                .catch((error) => { res.json(error) });
         });
         
         router.post('/todo', (req, res) => {
             const description = req.body.description;
             const done = req.body.done;
-            todosRepository.add([description, done])
-                .then(response => res.json(response))
-                .catch(error => console.log(error));
+            todosModel.create({
+                description, 
+                done
+            })
+            .then((result) => { res.json(result) })
+            .catch((error) => { res.json(error) });
         });
         
         router.put('/todo/:id?', (req, res) => {
             const description = req.body.description;
             const done = req.body.done;
-            const id = parseInt(req.params.id);
-            todosRepository.edit([description, done, id])
-                .then(response => res.json(response))
-                .catch(error => console.log(error));
+            const id = parseInt(req.params.id);            
+            todosModel.update({
+                description, 
+                done
+            }, {
+                where: { 
+                    id: id 
+                }
+            })
+            .then((result) => { res.json(result) })
+            .catch((error) => { res.json(error) });
         });
         
         router.delete('/todo/:id?', (req, res) => {
             const id = parseInt(req.params.id);
-            todosRepository.delete([id])
-                .then(response => res.json(response))
-                .catch(error => console.log(error));
-        })        
+            todosModel.destroy({
+                where: {
+                    id
+                }
+            })
+            .then((result) => { res.json(result) })
+            .catch((error) => { res.json(error) });
+        });
     }
 }
