@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const todosRouter = require('./routers/todos-routers');
+const usersRouter = require('./routers/users-routers');
 
 /*
 * Express Server Http
@@ -14,6 +16,7 @@ const port = 3000;
 */
 const router = express.Router();
 todosRouter.configuration(router);
+usersRouter.configuration(router);
 
 /*
 * Middleware
