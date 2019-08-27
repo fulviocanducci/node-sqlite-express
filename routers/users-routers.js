@@ -1,27 +1,27 @@
 const usersModel = require('../models/users-model');
 const bcrypt = require('bcrypt');
+const salt = require('../auth/salt');
+const jwt = require('../middlewares/jwt-middleware');
 
-const salt = 10;
-
-module.exports = {
-    configuration: (router) => {
-        router.get('/users', (req, res) => {                        
+module.exports = {    
+    configuration: (router) => {        
+        router.get('/users', jwt, (req, res, next) => {                        
             usersModel.findAll()
                 .then((result) => { res.json(result) })
                 .catch((error) => { res.json(error) });
         });
         
-        router.get('/user/:id?', (req, res) => {
+        router.get('/user/:id?', jwt, (req, res, next) => {
             const id = parseInt(req.params.id);
             usersModel.findByPk(id)
                 .then((result) => { res.json(result) })
                 .catch((error) => { res.json(error) });
         });
         
-        router.post('/user', async (req, res) => {
+        router.post('/user', jwt, async (req, res, next) => {
             const name = req.body.name;
             const email = req.body.email;
-            const password = await bcrypt.hash(req.body.password, salt);
+            const password = bcrypt.hashSync(req.body.password, salt.value);
             const app_id = req.body.app_id || null;
             const active = parseInt(req.body.active) || 0;
             const data = {
@@ -37,7 +37,7 @@ module.exports = {
             .catch((error) => { res.json(error) });
         });
         
-        router.put('/user/:id?', async (req, res) => {
+        router.put('/user/:id?', jwt, async (req, res, next) => {
             const name = req.body.name;
             const email = req.body.email;
             let password = req.body.password;
@@ -52,7 +52,7 @@ module.exports = {
                 active
             };
             if (password) {
-                data.password = await bcrypt.hash(req.body.password, salt);
+                data.password = bcrypt.hashSync(req.body.password, salt.value);
             } else {
                 delete data.password;
             }
@@ -65,7 +65,7 @@ module.exports = {
             .catch((error) => { res.json(error) });
         });
         
-        router.delete('/user/:id?', (req, res) => {
+        router.delete('/user/:id?', jwt, (req, res, next) => {
             const id = parseInt(req.params.id);
             usersModel.destroy({
                 where: {
