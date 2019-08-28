@@ -21,7 +21,12 @@ authRouter.configuration(router);
 /*
 * Middleware
 */
+// const corsOptions = {
+//     origin: true,
+//     optionsSuccessStatus: 200
+// }
 app.use(cors());
+app.options('*', cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', router);
