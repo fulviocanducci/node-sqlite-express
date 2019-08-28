@@ -1,7 +1,8 @@
-const usersModel = require('../models/users-model');
 const bcrypt = require('bcrypt');
-const salt = require('../auth/salt');
+
+const usersModel = require('../models/users-model');
 const jwt = require('../middlewares/jwt-middleware');
+const { salt } = require('../auth/index');
 
 module.exports = {    
     configuration: (router) => {        
@@ -30,8 +31,7 @@ module.exports = {
                 password,
                 app_id,
                 active
-            };
-            console.log(data);
+            };            
             usersModel.create(data)
             .then((result) => { res.json(result) })
             .catch((error) => { res.json(error) });

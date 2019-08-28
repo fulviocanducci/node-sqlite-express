@@ -1,4 +1,4 @@
-const auth = require('../auth/auth');
+const { auth } = require('../auth/index');
 
 const jwt_verify = (token) => {
     return new Promise((resolve, reject) => {

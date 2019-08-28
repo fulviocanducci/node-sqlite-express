@@ -1,7 +1,7 @@
-const userModels = require('../models/users-model');
 const bcrypt = require('bcrypt');
-const auth = require('../auth/auth')
-const salt = require('../auth/salt');
+
+const userModels = require('../models/users-model');
+const { auth, salt } = require('../auth/index');
 
 module.exports = {
     configuration: (router) => {
@@ -29,13 +29,18 @@ module.exports = {
                         name: result.email,
                     };
                     var token = auth.createToken(data);
-                    res.json({token});
+                    res.json({
+                        token, 
+                        'status': 200,
+                        'description': 'Login valid'
+                    });
                 } else {
                     res
                         .status(404)
                         .json({
-                            'status': 'login invalid', 
-                            'error':'name or password inválid'
+                            'token':'',
+                            'status': 404,
+                            'description': 'Login invalid'
                         });
                 }                
             })
