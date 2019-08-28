@@ -25,6 +25,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', router);
+app.get('/', async (req, res) => {
+    res.json({Status: 'Service Success'});
+})
 
 /*
 * Listen
