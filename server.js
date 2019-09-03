@@ -31,11 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', router);
 app.get('/', async (req, res) => {
-    res.json({
-        status: 'Service Success', 
-        date_local: new Date().toLocaleDateString() ,
-        time_local: new Date().toLocaleTimeString() 
-    });
+    res.sendFile(__dirname + '/public/index.html');
 })
 
 /*

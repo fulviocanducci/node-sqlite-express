@@ -6,20 +6,20 @@ const { salt } = require('../auth/index');
 
 module.exports = {    
     configuration: (router) => {        
-        router.get('/users', jwt, (req, res, next) => {                        
+        router.get('/api/users', jwt, (req, res, next) => {                        
             usersModel.findAll()
                 .then((result) => { res.json(result) })
                 .catch((error) => { res.json(error) });
         });
         
-        router.get('/user/:id?', jwt, (req, res, next) => {
+        router.get('/api/user/:id?', jwt, (req, res, next) => {
             const id = parseInt(req.params.id);
             usersModel.findByPk(id)
                 .then((result) => { res.json(result) })
                 .catch((error) => { res.json(error) });
         });
         
-        router.post('/user', jwt, async (req, res, next) => {
+        router.post('/api/user', jwt, async (req, res, next) => {
             const name = req.body.name;
             const email = req.body.email;
             const password = bcrypt.hashSync(req.body.password, salt.value);
@@ -37,7 +37,7 @@ module.exports = {
             .catch((error) => { res.json(error) });
         });
         
-        router.put('/user/:id?', jwt, async (req, res, next) => {
+        router.put('/api/user/:id?', jwt, async (req, res, next) => {
             const name = req.body.name;
             const email = req.body.email;
             let password = req.body.password;
@@ -65,7 +65,7 @@ module.exports = {
             .catch((error) => { res.json(error) });
         });
         
-        router.delete('/user/:id?', jwt, (req, res, next) => {
+        router.delete('/api/user/:id?', jwt, (req, res, next) => {
             const id = parseInt(req.params.id);
             usersModel.destroy({
                 where: {

@@ -5,7 +5,7 @@ const { auth, salt } = require('../auth/index');
 
 module.exports = {
     configuration: (router) => {
-        router.post('/login', (req, res) => {            
+        router.post('/api/login', (req, res) => {            
             const email = req.body.email;
             const password = req.body.password;
             if (typeof email === 'undefined' || typeof password === 'undefined') {
